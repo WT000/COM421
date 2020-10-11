@@ -20,35 +20,29 @@ class LinkedList:
     self.last = None
 
   def add(self, data):
-    n = Node(data)
-    if self.first == None:
-      self.first = n # The linked list has already been made but is EMPTY, meaning we can say that "if the linked list is empty (which it is)", put the added node first.
-    else:
-      self.last.link(n) # If there's already an item in the list, link the newly added node to the existing one
+    n = Node(data) # Used to add the node itself
+    if (self.first == None): # If there's currently no first node it means the list is empty, make the added node the first node
+      self.first = n
+    else: # However, if there's currently a node in the linked list, link the existing last node to the new mode
+      self.last.link(n)
+    self.last = n # Update the reference point, the newest node needs to be the last node
 
-    self.last = n # The last node on the list is finally updated to be the newly added node
+  def get(self, index):
+    current_node = self.first # Get the node at the start of the list
+    count = 0 # Control variable
+    
+    while ((count < index) and (current_node != None)): # Until the count becomes greater than the index and current_node doesn't hit the end of the list, keep going through each node
+          current_node = current_node.next
+          count += 1
+      
+    return current_node # Now that the count is not lower than the users inputted number, the returned node will be the users desired node
 
 list1 = LinkedList()
 
 list1.add(1)
 list1.add(2)
-
-print(list1)
-# The main program, outside the class as it's not indented
-#n1 = Node("Red")
-#n2 = Node("Blue")
-
-# Checking the data inside each node
-#print(n1)
-#print(n2)
-
-# Linking the two nodes together
-#n1.link(n2)
-
-# Checking the link between the nodes
-#print()
-#print(n1.prev)
-#print(n1.next)
-#print(n2.prev)
-#print(n2.next)
-#print()
+list1.add(3)
+print(list1.get(0))
+print(list1.get(1))
+print(list1.get(2))
+print(list1.get(100))

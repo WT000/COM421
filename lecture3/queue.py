@@ -11,7 +11,7 @@ class Queue:
 # Add needs to add the item to the back of the queue
   def add(self, item):
     if (self.max == self.capacity):
-      print("The queue is full.")
+      print("Can't add {}, the queue is full.".format(item))
     else:
       self.internalArray[self.back] = item # Set the back of the queue to be the item being added
       self.back += 1

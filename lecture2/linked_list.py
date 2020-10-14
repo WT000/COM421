@@ -30,7 +30,11 @@ class LinkedList:
   def get(self, index):
     current_node = self.first # Get the node at the start of the list
     count = 0 # Control variable
+<<<<<<< HEAD
     # or while ((count < index) and (current_node is not None)
+=======
+    
+>>>>>>> origin/main
     while ((count < index) and (current_node != None)): # Until the count becomes greater than the index and current_node doesn't hit the end of the list, keep going through each node
           current_node = current_node.next
           count += 1

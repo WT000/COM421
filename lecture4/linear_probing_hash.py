@@ -24,12 +24,26 @@ class Hashtable:
     # Call the hash function and store the return in a variable
     finished_hash = self.hash(key)
     
-    # Create a list at the hash result if there's nothing there
+    # If the index is None, we can immediately make it the bucket
     if (self.bucket_list[finished_hash] == None):
-      self.bucket_list[finished_hash] = []
+      self.bucket_list[finished_hash] = (key, value)
     
-    # Append the key and value as a tuple into the created list
-    self.bucket_list[finished_hash].append((key, value))
+    # However, if we cant't, it means we need to find an empty
+    # space through a loop
+    else:
+      newpos = finished_hash + 1
+
+      while (newpos is not finished_hash):
+        if (newpos == self.size):
+          newpos = 0
+        if (self.bucket_list[newpos] == None):
+          self.bucket_list[newpos] = (key, value)
+          return True
+        else:
+          newpos += 1
+      
+      print("No buckets available.")
+      return None
 
   # This function allows a user to enter a key to view its associated value
   def get(self, key):
@@ -40,18 +54,37 @@ class Hashtable:
     # If there's nothing, return None
     if (fetched_bucket == None):
       return None
+    
+    # If we find the key, return the value
+    elif (fetched_bucket[0] == key):
+      return fetched_bucket[1]
+    
+    # If the key is not there then there's been a collision or
+    # the bucket doesn't exist
+    # Go through each bucket and look for the key within any that
+    # aren't None, otherwise return None
+    else:
+      newpos = finished_hash + 1
+      
+      while (newpos is not finished_hash):
+        if (newpos == self.size):
+          newpos = 0
+        elif (self.bucket_list[newpos] is not None):
+          templist = self.bucket_list[newpos]
+          if (templist[0] == key):
+            return templist[1]
+        newpos += 1
 
-    # Use a for loop to go through the bucket until we find the key we're looking for
-    for data in fetched_bucket:
-      if (data[0] == key): # If the key (which is at position 0) is equal to the users key, return the value.
-        return data[1]
+      return None
     
   def __str__(self):
     return self.bucket_list.__str__()
 
-words = Hashtable()
+words = Hashtable(20)
 words.put("cat", "mammal that meows")
 words.put("act", "doing something")
-words.put("turtle", "i like turtles")
-#print(words)
+words.put("turtle", "shelled animal")
+words.put("lion", "angry cat")
+words.put("sea", "the ocean")
+print(words)
 print(words.get("turtle"))

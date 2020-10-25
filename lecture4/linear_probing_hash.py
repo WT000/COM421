@@ -16,8 +16,11 @@ class Hashtable:
       counter += 1
     hash_total %= self.size
     
+    # Hash again to reduce the likelihood of collision
+    secondary_hash = hash_total % self.size
+    
     # Return the hashed value
-    return hash_total
+    return secondary_hash
   
   # This function will add a key and value in the underlying list
   def put(self, key, value):
@@ -80,7 +83,7 @@ class Hashtable:
   def __str__(self):
     return self.bucket_list.__str__()
 
-words = Hashtable(20)
+words = Hashtable()
 words.put("cat", "mammal that meows")
 words.put("act", "doing something")
 words.put("turtle", "shelled animal")

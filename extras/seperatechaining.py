@@ -45,8 +45,7 @@ class Hash:
         if (word == key):
           print(value)
           return
-      print("Not found.")
-      
+      print("Not found.")     
 
   def __str__(self):
     return self.internalArray.__str__()

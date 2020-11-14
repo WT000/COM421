@@ -5,17 +5,13 @@ list_of_n = [20, 39, 48, 10, 8, 3]
 # we can use a for loop to do this
 for i in range(len(list_of_n) - 1):
   
-  # Then, for each number inside the list of numbers - 1 and - i
-  # (so we don't keep going to numbers we've already sorted), we
-  # swap the position of j  with anything that's bigger than it
-  # TO THE RIGHT.
-
-  # The minus i part could be seen as making this as a modified
-  # bubble sort
+  # Swap the positions of an item in the index if j is greater
+  # than j+1
   for j in range(len(list_of_n) - 1 - i):
     if (list_of_n[j] > list_of_n[j+1]):
       temp = list_of_n[j]
       list_of_n[j] = list_of_n[j+1]
       list_of_n[j+1] = temp
 
+# Print the sorted list
 print(list_of_n)

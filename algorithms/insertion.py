@@ -15,8 +15,6 @@ def insertionsort(arrayinput):
           # the number at the counter has a value lower than the data
           # to the left, 'shift' (swap) the items in the array
           # until it's in a sorted position.
-          # The sorted pos is reached when the index at counter
-          # has no greater values to the left of it
           while (counter > 0 and arrayinput[counter] < arrayinput[counter-1]):
             temp = arrayinput[counter-1]
             arrayinput[counter-1] = arrayinput[counter]

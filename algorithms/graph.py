@@ -1,5 +1,6 @@
 from heapq import heappush, heappop
 import collections
+import random
 
 class Node:
   def __init__(self, name):
@@ -33,6 +34,8 @@ class Edge:
 
 # The graph class only really holds the algorithms for the node and edge objects
 class Graph:
+  # Create straight line distances from the nodes to Nice when the
+  # graph is created for A*
   def __init__(self):
     self.h_distances = {
       "Birmingham":1188,
@@ -130,9 +133,9 @@ class Graph:
           h_score = self.h_distances.get(current_node[1].name)
 
           # If the h score is none (meaning we're at the start node),
-          # turn None into 0
+          # turn H into a random value so we don't get an error
           if (h_score == None):
-            h_score = 0
+            h_score = random.randint(450, 950)
 
           # Then, we add the g score and h score to create the f score
           f_score = g_score + h_score

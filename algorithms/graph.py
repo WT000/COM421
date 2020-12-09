@@ -33,6 +33,17 @@ class Edge:
 
 # The graph class only really holds the algorithms for the node and edge objects
 class Graph:
+  def __init__(self):
+    self.h_distances = {
+      "Birmingham":1188,
+      "Brussels":823,
+      "Paris":686,
+      "Lyon":299,
+      "Bordeaux":637,
+      "Amsterdam":980,
+      "Cologne":805
+    }
+  
   def add_edge(self, start, end, dist):
     start.add_edge(start, end, dist)
     end.add_edge(end, start, dist)
@@ -67,14 +78,14 @@ class Graph:
 
           # If the distance we calculated is lower than the current shortest path, it means we've found an even smaller path.
           # Set the new shortest dist to the calculated distance and set the parent to the current node
-          if (calculated_dist < edge.end.dist):
+          if (calculated_dist < current_shortest_dist):
             current_shortest_dist = calculated_dist
             edge.end.parent = current_node
           
           # Whether we found a shorter distance or not, we set the edge node's distance to whatever the shortest distance is and
           # finally push this onto the queue
           edge.end.dist = current_shortest_dist
-          heappush(priority_queue, (current_shortest_dist, edge.end))
+          heappush(priority_queue, (edge.end.dist, edge.end))
       
         # Now that the current nodes edges have been fully explored, we set this to true so that we don't explore the node again
         current_node[1].used = True
@@ -93,26 +104,118 @@ class Graph:
     # Now that the route has been created, we return it
     return route
 
+  def a_star(self, start_node, end_node):
+    priority_queue = []
+    current_node = start_node
+
+    current_node.dist = 0
+
+    heappush(priority_queue, (current_node.dist, current_node))
+
+    while (len(priority_queue) != 0 or current_node[1] != end_node):
+      current_node = heappop(priority_queue)
+      # index 0 represents the node distance, used for the ordering in the queue
+      # index 1 represents the node itself
+      
+      for edge in current_node[1].edges:
+        if (edge.end.used == False):
+          # The g score is the same calculation as dijkstra's, that
+          # being the current nodes distance from the starting node
+          # plus the edge distance of the edge
+          g_score = current_node[0] + edge.dist
+
+          # Whilst the h score is new, this is the straight line
+          # distance from the node to get to the destination
+          # in this case, always being Nice
+          h_score = self.h_distances.get(current_node[1].name)
+
+          # If the h score is none (meaning we're at the start node),
+          # turn None into 0
+          if (h_score == None):
+            h_score = 0
+
+          # Then, we add the g score and h score to create the f score
+          f_score = g_score + h_score
+
+          # The calculation is then the same as the previous algorithm,
+          # we get the current shortest distance to the end node
+          # and compare this to the newly calculated distance, if it's
+          # lower then we'll update the shortest distance and parent
+          # of the end node
+          current_shortest_dist = edge.end.dist
+
+          if (f_score < current_shortest_dist):
+            current_shortest_dist = f_score
+            edge.end.parent = current_node
+          
+          # Then, whether we replaced the values or not, we update
+          # the end distance to be the current shortest and push this
+          # to the queue, with the node explored we make used True
+          edge.end.dist = current_shortest_dist
+          heappush(priority_queue, (edge.end.dist, edge.end))
+      
+        current_node[1].used = True
+    
+    route = collections.deque([])
+
+    while current_node is not None:
+      route.appendleft(current_node[1].name)
+      current_node = current_node[1].parent
+
+    return route
+
 if (__name__ == "__main__"):
-  graph = Graph()
+  choice = int(input("Enter 1 for dijkstra, 2 for A*\n"))
+
+  if (choice == 1):
+    graph = Graph()
+    
+    a = Node("A")
+    b = Node("B")
+    c = Node("C")
+    d = Node("D")
+
+    graph.add_edge(a, b, 10)
+    graph.add_edge(a, c, 3)
+    graph.add_edge(b, c, 1)
+    graph.add_edge(b, d, 4)
+    graph.add_edge(c, d, 8)
+
+    print(graph.dijkstra(a, d))
+
+    #
+    #
+    #   10 B  4
+    # A     1   D
+    #   3  C  8
+    #
+    # The correct order is A > C > B > D
   
-  a = Node("A")
-  b = Node("B")
-  c = Node("C")
-  d = Node("D")
+  elif (choice == 2):
+    graph = Graph()
 
-  graph.add_edge(a, b, 10)
-  graph.add_edge(a, c, 3)
-  graph.add_edge(b, c, 1)
-  graph.add_edge(b, d, 4)
-  graph.add_edge(c, d, 8)
+    birmingham = Node("Birmingham")
+    london = Node("London")
+    amsterdam = Node("Amsterdam")
+    brussels = Node("Brussels")
+    cologne = Node("Colonge")
+    paris = Node("Paris")
+    lyon = Node("Lyon")
+    bordeaux = Node("Bordeuax")
+    nice = Node("Nice")
 
-  print(graph.dijkstra(a, d))
+    graph.add_edge(birmingham, london, 191)
+    graph.add_edge(london, brussels, 370)
+    graph.add_edge(london, paris, 461)
+    graph.add_edge(brussels, paris, 306)
+    graph.add_edge(brussels, cologne, 211)
+    graph.add_edge(brussels, amsterdam, 211)
+    graph.add_edge(paris, lyon, 465)
+    graph.add_edge(paris, bordeaux, 584)
+    graph.add_edge(lyon, nice, 472)
+    graph.add_edge(bordeaux, nice, 803)
 
-  #
-  #
-  #   10 B  4
-  # A     1   D
-  #   3  C  8
-  #
-  # The correct order is A > C > B > D
+    print(graph.a_star(london, nice))
+
+  else:
+    print("Please enter 1 or 2.")

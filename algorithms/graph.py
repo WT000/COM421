@@ -40,16 +40,16 @@ class Graph:
   def dijkstra(self, start_node, end_node):
     # Firstly, we create the priority queue and set the current node to None
     priority_queue = []
-    current_node = None
+    current_node = start_node
 
     # Then, we set the start nodes distance to 0, as it's the node to start exploring from
-    start_node.dist = 0
+    current_node.dist = 0
 
     # With the distance set, we now push the starting node onto the priority queue
-    heappush(priority_queue, (start_node.dist, start_node))
+    heappush(priority_queue, (current_node.dist, current_node))
 
     # Whilst the length of the queue is greater than 0 and we haven't reached the end node:
-    while (len(priority_queue) != 0):
+    while (len(priority_queue) != 0 or current_node[1] != end_node):
       # We pop the node that was at the front of the queue (whichever has the next lowest distance) and store it in current_node
       current_node = heappop(priority_queue)
       

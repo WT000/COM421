@@ -165,7 +165,7 @@ class Graph:
     return route
 
 if (__name__ == "__main__"):
-  choice = int(input("Enter 1 for dijkstra, 2 for A*\n"))
+  choice = int(input("Enter 1 for dijkstra, 2 for A*, 3 for dijkstra with the same nodes as A*\n"))
 
   if (choice == 1):
     graph = Graph()
@@ -191,7 +191,7 @@ if (__name__ == "__main__"):
     #
     # The correct order is A > C > B > D
   
-  elif (choice == 2):
+  elif (choice == 2 or choice == 3):
     graph = Graph()
 
     birmingham = Node("Birmingham")
@@ -215,7 +215,10 @@ if (__name__ == "__main__"):
     graph.add_edge(lyon, nice, 472)
     graph.add_edge(bordeaux, nice, 803)
 
-    print(graph.a_star(london, nice))
+    if (choice == 2):
+      print(graph.a_star(london, nice))
+    else:
+      print(graph.dijkstra(london, nice))
 
   else:
     print("Please enter 1 or 2.")

@@ -90,8 +90,8 @@ class Graph:
           edge.end.dist = current_shortest_dist
           heappush(priority_queue, (edge.end.dist, edge.end))
       
-        # Now that the current nodes edges have been fully explored, we set this to true so that we don't explore the node again
-        current_node[1].used = True
+      # Now that the current nodes edges have been fully explored, we set this to true so that we don't explore the node again
+      current_node[1].used = True
     
     # Once the while loop is complete, it means we've found the route, so we next
     # create a route queue which will be used to display the route
@@ -157,7 +157,7 @@ class Graph:
           edge.end.dist = current_shortest_dist
           heappush(priority_queue, (edge.end.dist, edge.end))
       
-        current_node[1].used = True
+      current_node[1].used = True
     
     route = collections.deque([])
 

@@ -50,35 +50,35 @@ class Graph:
 
     # Whilst the length of the queue is greater than 0 and we haven't reached the end node:
     while (len(priority_queue) != 0):
+      print("{}: {}".format())
       # We pop the node that was at the front of the queue (whichever has the next lowest distance) and store it in current_node
       current_node = heappop(priority_queue)
+      
       # index 0 represents the node distance, used for the ordering in the queue
       # index 1 represents the node itself
       
-      # Then, we look at each of the edges, if the node at the end of an edge has already been explored we skip the edge
+      # Then, we look at each of the edges, if the node hasn't been explored then we'll explore it
       for edge in current_node[1].edges:
-        if (edge.end.used == True):
-          continue
-        
-        # Else, we firstly calculate the distance from the current node to the node at the end of the edge
-        calculated_dist = current_node[0] + edge.dist
+        if (edge.end.used == False):
+          # Else, we firstly calculate the distance from the current node to the node at the end of the edge
+          calculated_dist = current_node[0] + edge.dist
 
-        # Then, we set the current shortest path to the distance to the end node
-        current_shortest_dist = edge.end.dist
+          # Then, we set the current shortest path to the distance to the end node
+          current_shortest_dist = edge.end.dist
 
-        # If the distance we calculated is lower than the current shortest path, it means we've found an even smaller path.
-        # Set the new shortest dist to the calculated distance and set the parent to the current node
-        if (calculated_dist < current_shortest_dist):
-          current_shortest_dist = calculated_dist
-          edge.end.parent = current_node
-        
-        # Whether we found a shorter distance or not, we set the edge node's distance to whatever the shortest distance is and
-        # finally push this onto the queue
-        edge.end.dist = current_shortest_dist
-        heappush(priority_queue, (current_shortest_dist, edge.end))
+          # If the distance we calculated is lower than the current shortest path, it means we've found an even smaller path.
+          # Set the new shortest dist to the calculated distance and set the parent to the current node
+          if (calculated_dist < edge.end.dist):
+            current_shortest_dist = calculated_dist
+            edge.end.parent = current_node
+          
+          # Whether we found a shorter distance or not, we set the edge node's distance to whatever the shortest distance is and
+          # finally push this onto the queue
+          edge.end.dist = current_shortest_dist
+          heappush(priority_queue, (current_shortest_dist, edge.end))
       
-      # Now that the current nodes edges have been fully explored, we set this to true so that we don't explore the node again
-      current_node[1].used = True
+        # Now that the current nodes edges have been fully explored, we set this to true so that we don't explore the node again
+        current_node[1].used = True
     
     # Once the while loop is complete, it means we've found the route, so we next
     # create a route queue which will be used to display the route

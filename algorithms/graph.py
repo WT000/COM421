@@ -50,7 +50,6 @@ class Graph:
 
     # Whilst the length of the queue is greater than 0 and we haven't reached the end node:
     while (len(priority_queue) != 0):
-      print("{}: {}".format())
       # We pop the node that was at the front of the queue (whichever has the next lowest distance) and store it in current_node
       current_node = heappop(priority_queue)
       

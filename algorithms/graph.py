@@ -56,7 +56,8 @@ class Graph:
     priority_queue = []
     current_node = start_node
 
-    # Then, we set the start nodes distance to 0, as it's the node to start exploring from
+    # Then, we set the start nodes distance to 0, as it's the node to 
+    # start exploring from
     current_node.dist = 0
 
     # With the distance set, we now push the starting node onto the priority queue
@@ -64,28 +65,34 @@ class Graph:
 
     # Whilst the length of the queue is greater than 0 and we haven't reached the end node:
     while (len(priority_queue) != 0 or current_node[1] != end_node):
-      # We pop the node that was at the front of the queue (whichever has the next lowest distance) and store it in current_node
+      # We pop the node that was at the front of the queue (whichever has
+      # the next lowest distance) and store it in current_node
       current_node = heappop(priority_queue)
       
       # index 0 represents the node distance, used for the ordering in the queue
       # index 1 represents the node itself
       
-      # Then, we look at each of the edges, if the node hasn't been explored then we'll explore it
+      # Then, we look through current_node's edges, if the end node hasn't 
+      # been explored then we'll calculate the distance
       for edge in current_node[1].edges:
         if (edge.end.used == False):
-          # Else, we firstly calculate the distance from the current node to the node at the end of the edge
+          # We firstly calculate the distance from the current node to the node at the end of the edge
           calculated_edge_dist = current_node[0] + edge.dist
 
-          # If the distance we calculated is lower than the current shortest path, it means we've found an even smaller path.
-          # Set the new shortest dist to the calculated distance and set the parent to the current node
+          # If the distance we calculated is lower than the current shortest
+          # path, it means we've found an even smaller path.
+          # Replace the end nodes current dist and set the parent to the 
+          # current node.
           if (calculated_edge_dist < edge.end.dist):
             edge.end.dist = calculated_edge_dist
             edge.end.parent = current_node
           
-          # Push the edge end onto the queue
+          # Push the edge end node onto the queue, using its dist from the source node 
+          # as the order value
           heappush(priority_queue, (edge.end.dist, edge.end))
       
-      # Now that the current nodes edges have been fully explored, we set this to true so that we don't explore the node again
+      # Now that current_node's edges have been looked at, we no longer need
+      # to look at the node in current_node. Set used to True.
       current_node[1].used = True
     
     # Once the while loop is complete, it means we've found the route, so we next
@@ -122,12 +129,12 @@ class Graph:
           # plus the edge distance of the edge
           g_score = current_node[0] + edge.dist
 
-          # Whilst the h score is new, this is the straight line
+          # The h score is different to dijsktra, this is the straight line
           # distance from the node to get to the destination
           # in this case, always being Nice
           h_score = self.h_distances.get(current_node[1].name)
 
-          # If the h score is none (meaning we're at the start node),
+          # If the h score is None (meaning we're at the start node),
           # turn H into a random value so we don't get an error
           if (h_score == None):
             h_score = random.randint(450, 950)
@@ -136,17 +143,18 @@ class Graph:
           f_score = g_score + h_score
 
           # The calculation is then the same as Dijkstra, but
-          # we compare the f score to the edge distance, if it's
-          # lower then we'll update the shortest distance and parent
-          # of the end node
+          # we compare the f score to the edge distance instead of comparing
+          # the g score alone
           if (f_score < edge.end.dist):
             edge.end.dist = f_score
             edge.end.parent = current_node
           
-          # Then, we add the edge along with its distance (whether
-          # smaller or not) to the priority queue
+          # Then, we add the edge along with its distance to the priority 
+          # queue. The node with the lowest f score will be explored next
           heappush(priority_queue, (edge.end.dist, edge.end))
-  
+
+      # We're done calculating the f_scores for current_node, set used 
+      # to True
       current_node[1].used = True
     
     route = collections.deque([])

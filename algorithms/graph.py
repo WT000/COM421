@@ -74,20 +74,15 @@ class Graph:
       for edge in current_node[1].edges:
         if (edge.end.used == False):
           # Else, we firstly calculate the distance from the current node to the node at the end of the edge
-          calculated_dist = current_node[0] + edge.dist
-
-          # Then, we set the current shortest path to the distance to the end node
-          current_shortest_dist = edge.end.dist
+          calculated_edge_dist = current_node[0] + edge.dist
 
           # If the distance we calculated is lower than the current shortest path, it means we've found an even smaller path.
           # Set the new shortest dist to the calculated distance and set the parent to the current node
-          if (calculated_dist < current_shortest_dist):
-            current_shortest_dist = calculated_dist
+          if (calculated_edge_dist < edge.end.dist):
+            edge.end.dist = calculated_edge_dist
             edge.end.parent = current_node
           
-          # Whether we found a shorter distance or not, we set the edge node's distance to whatever the shortest distance is and
-          # finally push this onto the queue
-          edge.end.dist = current_shortest_dist
+          # Push the edge end onto the queue
           heappush(priority_queue, (edge.end.dist, edge.end))
       
       # Now that the current nodes edges have been fully explored, we set this to true so that we don't explore the node again
@@ -140,23 +135,18 @@ class Graph:
           # Then, we add the g score and h score to create the f score
           f_score = g_score + h_score
 
-          # The calculation is then the same as the previous algorithm,
-          # we get the current shortest distance to the end node
-          # and compare this to the newly calculated distance, if it's
+          # The calculation is then the same as Dijkstra, but
+          # we compare the f score to the edge distance, if it's
           # lower then we'll update the shortest distance and parent
           # of the end node
-          current_shortest_dist = edge.end.dist
-
-          if (f_score < current_shortest_dist):
-            current_shortest_dist = f_score
+          if (f_score < edge.end.dist):
+            edge.end.dist = f_score
             edge.end.parent = current_node
           
-          # Then, whether we replaced the values or not, we update
-          # the end distance to be the current shortest and push this
-          # to the queue, with the node explored we make used True
-          edge.end.dist = current_shortest_dist
+          # Then, we add the edge along with its distance (whether
+          # smaller or not) to the priority queue
           heappush(priority_queue, (edge.end.dist, edge.end))
-      
+  
       current_node[1].used = True
     
     route = collections.deque([])

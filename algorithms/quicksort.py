@@ -31,6 +31,26 @@ def quickSort(array, startIndex, endIndex):
         quickSort(array, startIndex, part-1)
         quickSort(array, part+1, endIndex)
 
+def quickSort2(array):
+    if len(array) > 1:
+        pivot = array[0]
+        
+        lowNum = []
+        equalNum = []
+        highNum = []
+        
+        for i in array:
+            if i < pivot:
+                lowNum.append(i)
+            elif i > pivot:
+                highNum.append(i)
+            else:
+                equalNum.append(i)
+        
+        return quickSort2(lowNum) + equalNum + quickSort2(highNum)
+    else:
+        return array
+
 def binarySearch(array, numToFind):
     if len(array) > 1:
         leftIndex = 0
@@ -61,3 +81,11 @@ def binarySearch(array, numToFind):
 list = [22, 56, 1, 59, 38, 7, 15, 17, 33]
 quickSort(list, 0, len(list)-1)
 print(list)
+
+print(binarySearch(list, 33))
+
+secondList = [84, 23, 188, 3, 828, -4]
+secondList = quickSort2(secondList)
+print(secondList)
+
+print(binarySearch(secondList, -4))

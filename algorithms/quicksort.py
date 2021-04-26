@@ -1,7 +1,7 @@
 def hoare(array, startIndex, endIndex):
-    # I originally used the middle of the array for the pivot, but now I'll make it the end index.
+    # I originally used the middle of the array for the pivot, but now I'll make it the end index
     #mid = math.floor((start_index + end_index) / 2)
-    pivotIndex = endIndex
+    pivot = array[endIndex]
     
     # Setup the i and j fingers
     i, j = startIndex, endIndex
@@ -9,11 +9,11 @@ def hoare(array, startIndex, endIndex):
     # Infinite loop
     while True:
         # While the number at i is lower than what number's at the pivot, increase i
-        while array[i] < array[pivotIndex]:
+        while array[i] < pivot:
             i += 1
         
         # While the number at j is greater than what number's at the pivot, increase j
-        while array[j] > array[pivotIndex]:
+        while array[j] > pivot:
             j -= 1
         
         # If i is lower than j, and the numbers aren't duplicates, it means we need to swap them

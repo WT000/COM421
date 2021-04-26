@@ -82,10 +82,10 @@ list = [22, 56, 1, 59, 38, 7, 15, 17, 33]
 quickSort(list, 0, len(list)-1)
 print(list)
 
-print(binarySearch(list, 33))
+print("Is 33 in the list: {}".format(binarySearch(list, 33)))
 
 secondList = [84, 23, 188, 3, 828, -4]
 secondList = quickSort2(secondList)
 print(secondList)
 
-print(binarySearch(secondList, -4))
+print("Is -4 in the list: {}".format(binarySearch(secondList, -4)))

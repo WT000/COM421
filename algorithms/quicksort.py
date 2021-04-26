@@ -30,7 +30,34 @@ def quickSort(array, startIndex, endIndex):
         part = hoare(array, startIndex, endIndex)
         quickSort(array, startIndex, part-1)
         quickSort(array, part+1, endIndex)
+
+def binarySearch(array, numToFind):
+    if len(array) > 1:
+        leftIndex = 0
+        rightIndex = len(array)-1
+        
+        searchIndex = None
+        found = False
+        while leftIndex < rightIndex and found is False:
+            searchIndex = (leftIndex + rightIndex) // 2
+            
+            if array[searchIndex] == numToFind:
+                return True
+            
+            elif array[searchIndex] > numToFind:
+                rightIndex = searchIndex
+            
+            else:
+                leftIndex = searchIndex
+                
+        return False
     
+    elif array[0] == numToFind:
+        return True
+    
+    else:
+        return False
+
 list = [22, 56, 1, 59, 38, 7, 15, 17, 33]
 quickSort(list, 0, len(list)-1)
 print(list)

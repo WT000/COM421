@@ -77,7 +77,8 @@ class Graph:
       for edge in current_node[1].edges:
         if (edge.end.used == False):
           # We firstly calculate the distance from the current node to the node at the end of the edge
-          calculated_edge_dist = current_node[0] + edge.dist
+          # Could also be calculated through current_node[0] + edge.dist as it's the same value
+          calculated_edge_dist = current_node[1].dist + edge.dist
 
           # If the distance we calculated is lower than the current shortest
           # path, it means we've found an even smaller path.
